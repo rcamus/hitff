@@ -1,9 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="utf-8">
+    <title>Players</title>
+    <style>
+        img {
+            height: 100px;
+            float: left;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
 </head>
+<body>
+
+<div id="images"></div>
+
+<script>
+    (function() {
+        var players = "http://api.fantasyomatic.com/v0/players/";
+        $.getJSON( players, {
+            tags: "mount rainier",
+            tagmode: "any",
+            format: "json"
+        })
+            .done(function( data ) {
+                $.each( data.items, function( i, item ) {
+                    //$( "<img>" ).attr( "src", item.media.m ).appendTo( "#images" );
+
+                });
+            });
+        $.ajax({
+            type: 'GET',
+            url:'http://api.fantasyomatic.com/v0/players/',
+            dataType: "json",
+            success: function(arr){
+                var out = "";
+                for(i = 0; i<arr.length; i++) {
+                    mp[arr[i].key] = arr[i].value;
+                }
+            }
+        });
+    })();
+</script>
 <body>
 
 </body>
