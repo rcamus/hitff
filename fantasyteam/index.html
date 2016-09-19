@@ -13,33 +13,38 @@
 </head>
 <body>
 
-<div id="images"></div>
+<div id="qb"></div>
 
 <script>
     (function() {
-        var players = "http://api.fantasyomatic.com/v0/players/";
+        //var players = "http://api.fantasyomatic.com/v0/players/";
+        var players  = "http://api.fantasy.nfl.com/v1/players/advanced?season=2016";
         $.getJSON( players, {
             tags: "mount rainier",
             tagmode: "any",
             format: "json"
         })
             .done(function( data ) {
-                $.each( data.items, function( i, item ) {
+                $.each( data, function( position, players ) {
                     //$( "<img>" ).attr( "src", item.media.m ).appendTo( "#images" );
-
+                    if(position == "QB"){
+                        $.each( players, function( index, player ) {
+                            $("<div>" + player.firstName + "&nbsp;" + player.lastName +  "</div>").appendTo("#qb");
+                        });
+                    }
                 });
             });
-        $.ajax({
-            type: 'GET',
-            url:'http://api.fantasyomatic.com/v0/players/',
-            dataType: "json",
-            success: function(arr){
-                var out = "";
-                for(i = 0; i<arr.length; i++) {
-                    mp[arr[i].key] = arr[i].value;
-                }
-            }
-        });
+//        $.ajax({
+//            type: 'GET',
+//            url:'http://api.fantasyomatic.com/v0/players/',
+//            dataType: "json",
+//            success: function(arr){
+//                var out = "";
+//                for(i = 0; i<arr.length; i++) {
+//                    mp[arr[i].key] = arr[i].value;
+//                }
+//            }
+//        });
     })();
 </script>
 <body>
