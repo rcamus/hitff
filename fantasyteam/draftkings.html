@@ -15,8 +15,8 @@
         }
         table#tblMain {
         }
-        table #tblQb,#tblRb,#tblWr,#tblTe,#tblDst,#tblK {
-            width: 400px;
+        table #tblAll,#tblQb,#tblRb,#tblWr,#tblTe,#tblDst,#tblK {
+            width: 450px;
         }
         tr {
 
@@ -54,7 +54,7 @@
 <table id="tblMain">
 <tr>
     <td id="tdMain">
-        <table>
+        <table id="tblAll">
             <thead>
             <tr>
                 <th>Name</th>
@@ -77,6 +77,7 @@
             <tr>
                 <th>Name</th>
                 <th>Salary</th>
+                <th>Value</th>
                 <th>Position</th>
                 <th>Points</th>
             </tr>
@@ -84,6 +85,7 @@
             <tr>
                 <td id="tdQbName" style=""></td>
                 <td id="tdQbSalary" style=""></td>
+                <td id="tdQbValue"></td>
                 <td id="tdQbPosition" style=""></td>
                 <td id="tdQbPoints" style=""></td>
             </tr>
@@ -95,6 +97,7 @@
             <tr>
                 <th>Name</th>
                 <th>Salary</th>
+                <th>Value</th>
                 <th>Position</th>
                 <th>Points</th>
             </tr>
@@ -102,6 +105,7 @@
             <tr>
                 <td id="tdRbName" style=""></td>
                 <td id="tdRbSalary" style=""></td>
+                <td id="tdRbValue"></td>
                 <td id="tdRbPosition" style=""></td>
                 <td id="tdRbPoints" style=""></td>
             </tr>
@@ -113,6 +117,7 @@
             <tr>
                 <th>Name</th>
                 <th>Salary</th>
+                <th>Value</th>
                 <th>Position</th>
                 <th>Points</th>
             </tr>
@@ -120,6 +125,7 @@
             <tr>
                 <td id="tdWrName" style=""></td>
                 <td id="tdWrSalary" style=""></td>
+                <td id="tdWrValue"></td>
                 <td id="tdWrPosition" style=""></td>
                 <td id="tdWrPoints" style=""></td>
             </tr>
@@ -131,6 +137,7 @@
             <tr>
                 <th>Name</th>
                 <th>Salary</th>
+                <th>Value</th>
                 <th>Position</th>
                 <th>Points</th>
             </tr>
@@ -138,6 +145,7 @@
             <tr>
                 <td id="tdTeName" style=""></td>
                 <td id="tdTeSalary" style=""></td>
+                <td id="tdTeValue"></td>
                 <td id="tdTePosition" style=""></td>
                 <td id="tdTePoints" style=""></td>
             </tr>
@@ -149,6 +157,7 @@
             <tr>
                 <th>Name</th>
                 <th>Salary</th>
+                <th>Value</th>
                 <th>Position</th>
                 <th>Points</th>
             </tr>
@@ -156,6 +165,7 @@
             <tr>
                 <td id="tdDstName" style=""></td>
                 <td id="tdDstSalary" style=""></td>
+                <td id="tdDstValue"></td>
                 <td id="tdDstPosition" style=""></td>
                 <td id="tdDstPoints" style=""></td>
             </tr>
@@ -167,6 +177,7 @@
             <tr>
                 <th>Name</th>
                 <th>Salary</th>
+                <th>Value</th>
                 <th>Position</th>
                 <th>Points</th>
             </tr>
@@ -174,6 +185,7 @@
             <tr>
                 <td id="tdKName" style=""></td>
                 <td id="tdKSalary" style=""></td>
+                <td id="tdKValue"></td>
                 <td id="tdKPosition" style=""></td>
                 <td id="tdKPoints" style=""></td>
             </tr>
@@ -284,7 +296,7 @@
     /*
         Filter and Display Fantasy Football Analytics Projections with Draft Kings salaries
      */
-    function getFfaRankings() {
+    function displayFfaRankings() {
         if(lstFfaRankings != null) {
             $.each( lstFfaRankings, function( index, player ) {
                 if(player.salary == null) {
@@ -299,18 +311,21 @@
                 if(player.playerposition == "QB") {
                     $("<div><input type='checkbox' id='" + player.playerId + "' value='" + player.playerId + "' />" + player.playername + "</div>").appendTo("#tdQbName");
                     $("<div>" + player.salary + "</div>").appendTo("#tdQbSalary");
+                    $("<div>" + player.playervalue + "</div>").appendTo("#tdQbValue");
                     $("<div>" + player.position + "</div>").appendTo("#tdQbPosition");
                     $("<div>" + player.points + "</div>").appendTo("#tdQbPoints");
                 }
                 if(player.playerposition == "RB") {
                     $("<div><input type='checkbox' id='" + player.playerId + "' value='" + player.playerId + "' />" + player.playername + "</div>").appendTo("#tdRbName");
                     $("<div>" + player.salary + "</div>").appendTo("#tdRbSalary");
+                    $("<div>" + player.playervalue + "</div>").appendTo("#tdRbValue");
                     $("<div>" + player.position + "</div>").appendTo("#tdRbPosition");
                     $("<div>" + player.points + "</div>").appendTo("#tdRbPoints");
                 }
                 if(player.playerposition == "WR") {
                     $("<div><input type='checkbox' id='" + player.playerId + "' value='" + player.playerId + "' />" + player.playername + "</div>").appendTo("#tdWrName");
                     $("<div>" + player.salary + "</div>").appendTo("#tdWrSalary");
+                    $("<div>" + player.playervalue + "</div>").appendTo("#tdWrValue");
                     $("<div>" + player.position + "</div>").appendTo("#tdWrPosition");
                     $("<div>" + player.points + "</div>").appendTo("#tdWrPoints");
                 }
@@ -323,12 +338,14 @@
                 if(player.playerposition == "DST") {
                     $("<div><input type='checkbox' id='" + player.playerId + "' value='" + player.playerId + "' />" + player.playername + "</div>").appendTo("#tdDstName");
                     $("<div>" + player.salary + "</div>").appendTo("#tdDstSalary");
+                    $("<div>" + player.playervalue + "</div>").appendTo("#tdDstValue");
                     $("<div>" + player.position + "</div>").appendTo("#tdDstPosition");
                     $("<div>" + player.points + "</div>").appendTo("#tdDstPoints");
                 }
                 if(player.playerposition == "K") {
                     $("<div><input type='checkbox' id='" + player.playername + "' value='" + player.playername + "' />" + player.playername + "</div>").appendTo("#tdKName");
                     $("<div>" + player.salary + "</div>").appendTo("#tdKSalary");
+                    $("<div>" + player.playervalue + "</div>").appendTo("#tdKValue");
                     $("<div>" + player.position + "</div>").appendTo("#tdKPosition");
                     $("<div>" + player.points + "</div>").appendTo("#tdKPoints");
                 }
@@ -376,9 +393,9 @@
                 }
             });
         }
-        getFfaRankings();
+        addPlayerValues();
+        displayFfaRankings();
         cbStatus();
-        // TODO: Calculate undervalued players by subtracting the salary of the next highest projected player of each row.
     }
 
     /*
@@ -394,7 +411,28 @@
             }
         });
     }
-    
+
+    /*
+        Add Player Values
+     */
+    // TODO: Calculate undervalued players by subtracting the salary of the next highest projected player of each row.
+    function addPlayerValues() {
+        if(lstFfaRankings != null) {
+            var nextPlayer = null;
+            var nextSalary = 0;
+            var nextIndex;
+            var previousIndex;
+            $.each( lstFfaRankings, function( indexA, ffaPlayerPrevious ) {
+                nextIndex = indexA + 1;
+                $.each( lstFfaRankings, function( indexB, ffaPlayerNext ) {
+                    if(indexB == nextIndex) {
+                        ffaPlayerPrevious.playervalue = ffaPlayerPrevious.salary - ffaPlayerNext.salary;
+                    }
+                });
+            });
+        }
+    }
+
     /*
         Calculate running total salary
      */
@@ -423,7 +461,7 @@
                 } else if(operator == "minus") {
                     if(id == ffaPlayer.playerId) {
                         spentSalary = spentSalary - ffaPlayer.salary;
-                        remainingSalary = salaryCap + spentSalary;
+                        remainingSalary = salaryCap - spentSalary;
                         //alert("TotalSalary: " + spentSalary + ", " + "Remaining: " + remainingSalary);
                         $("#spnRemainingSalary").html('').append(remainingSalary);
                         // remove player from lineup
