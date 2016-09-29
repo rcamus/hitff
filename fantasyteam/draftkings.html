@@ -199,6 +199,7 @@
     var salaryCap = 50000;
     var spentSalary = 0;
     var remainingSalary = 50000;
+    var lineup = [];
 
     /*
         Get JSON Lists
@@ -377,6 +378,7 @@
         }
         getFfaRankings();
         cbStatus();
+        // TODO: Calculate undervalued players by subtracting the salary of the next highest projected player of each row.
     }
 
     /*
@@ -405,8 +407,18 @@
                         remainingSalary = salaryCap - spentSalary;
                         //alert("Spent Salary:  " + spentSalary + ", Remaining: " + remainingSalary);
                         $("#spnRemainingSalary").html('').append(remainingSalary);
-                        // TODO: Add name from array
+                        // add player to lineup
+                        JSON.stringify(addToLineup(ffaPlayer));
                         //$("#spnPlayers").append(ffaPlayer.playername + ", " );
+                        $("#spnPlayers").html('');
+                        $.each(lineup, function (index, player) {
+                            if(index == 0) {
+                                $("#spnPlayers").append(player.name);
+                            } else {
+                                $("#spnPlayers").append(", " + player.name);
+                            }
+                        })
+
                     }
                 } else if(operator == "minus") {
                     if(id == ffaPlayer.playerId) {
@@ -414,7 +426,24 @@
                         remainingSalary = salaryCap + spentSalary;
                         //alert("TotalSalary: " + spentSalary + ", " + "Remaining: " + remainingSalary);
                         $("#spnRemainingSalary").html('').append(remainingSalary);
-                        // TODO: Remove name from array
+                        // remove player from lineup
+                        $.each(lineup, function (index, player) {
+                            if(typeof player === "undefined") {
+                                return;
+                            }
+                            if(player.name == ffaPlayer.playername) {
+                                removeFromLineup(index);
+                            }
+                        })
+                        $("#spnPlayers").html('');
+                        $.each(lineup, function (index, player) {
+                            if(index == 0) {
+                                $("#spnPlayers").append(player.name);
+                            } else {
+                                $("#spnPlayers").append(", " + player.name);
+                            }
+                        })
+
                     }
                 }
             });
@@ -434,6 +463,25 @@
             }
             temp[obj.playerId] = i;
         }
+    }
+
+    /*
+        Add player to lineup
+     */
+    function addToLineup(player) {
+        var objPlayer = new Object();
+        objPlayer.name = player.playername;
+        objPlayer.team = player.playerteam;
+        lineup.push(objPlayer);
+        return lineup;
+    }
+
+    /*
+        Remove player from lineup
+     */
+    function removeFromLineup(index) {
+        lineup.splice(index,1);
+        return lineup;
     }
 </script>
 </body>
