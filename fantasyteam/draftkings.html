@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Draft Kings Projections</title>
+    <style>
+        img {
+            height: 100px;
+            float: left;
+        }
+        table {
+            border-color: gray;
+            border-style: solid;
+            border-width: 1px;
+        }
+        table#tblMain {
+        }
+        table #tblQb,#tblRb,#tblWr,#tblTe,#tblDst,#tblK {
+            width: 400px;
+        }
+        tr {
+
+        }
+        td {
+            font-size: small;
+            vertical-align: text-top;
+        }
+        td #tdId,#tdQbId,#tdRbId,#tdWrId,#tdTeId,#tdKId {
+        }
+        td#tdK {
+
+        }
+        td#tdRb {
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body onload="mergeData();">
+<h1>Draft Kings Projections</h1>
+<div>
+    <h2 style="position: relative;float: left;">
+        <input type="button" onclick="mergeData();" value="Get Projections" />
+    </h2>
+    <div>
+        <span>
+            Salary Remaining:&nbsp;$
+        </span>
+        <span id="spnRemainingSalary">50,000</span>
+    </div>
+    <div>
+        &nbsp;Players:&nbsp;<span id="spnPlayers"></span>
+    </div>
+</div>
+<table id="tblMain">
+<tr>
+    <td id="tdMain">
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Salary</th>
+                <th>Position</th>
+                <th>Points</th>
+            </tr>
+            </thead>
+            <tr>
+                <td id="tdName" style=""></td>
+                <td id="tdSalary" style=""></td>
+                <td id="tdPosition" style=""></td>
+                <td id="tdPoints" style=""></td>
+            </tr>
+        </table>
+    </td>
+    <td id="tdQb">
+        <table id="tblQb">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Salary</th>
+                <th>Position</th>
+                <th>Points</th>
+            </tr>
+            </thead>
+            <tr>
+                <td id="tdQbName" style=""></td>
+                <td id="tdQbSalary" style=""></td>
+                <td id="tdQbPosition" style=""></td>
+                <td id="tdQbPoints" style=""></td>
+            </tr>
+        </table>
+    </td>
+    <td id="tdRb">
+        <table id="tblRb">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Salary</th>
+                <th>Position</th>
+                <th>Points</th>
+            </tr>
+            </thead>
+            <tr>
+                <td id="tdRbName" style=""></td>
+                <td id="tdRbSalary" style=""></td>
+                <td id="tdRbPosition" style=""></td>
+                <td id="tdRbPoints" style=""></td>
+            </tr>
+        </table>
+    </td>
+    <td id="tdWr">
+        <table id="tblWr">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Salary</th>
+                <th>Position</th>
+                <th>Points</th>
+            </tr>
+            </thead>
+            <tr>
+                <td id="tdWrName" style=""></td>
+                <td id="tdWrSalary" style=""></td>
+                <td id="tdWrPosition" style=""></td>
+                <td id="tdWrPoints" style=""></td>
+            </tr>
+        </table>
+    </td>
+    <td id="tdTe">
+        <table id="tblTe">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Salary</th>
+                <th>Position</th>
+                <th>Points</th>
+            </tr>
+            </thead>
+            <tr>
+                <td id="tdTeName" style=""></td>
+                <td id="tdTeSalary" style=""></td>
+                <td id="tdTePosition" style=""></td>
+                <td id="tdTePoints" style=""></td>
+            </tr>
+        </table>
+    </td>
+    <td id="tdDst">
+        <table id="tblDst">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Salary</th>
+                <th>Position</th>
+                <th>Points</th>
+            </tr>
+            </thead>
+            <tr>
+                <td id="tdDstName" style=""></td>
+                <td id="tdDstSalary" style=""></td>
+                <td id="tdDstPosition" style=""></td>
+                <td id="tdDstPoints" style=""></td>
+            </tr>
+        </table>
+    </td>
+    <td id="tdK">
+        <table id="tblK">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Salary</th>
+                <th>Position</th>
+                <th>Points</th>
+            </tr>
+            </thead>
+            <tr>
+                <td id="tdKName" style=""></td>
+                <td id="tdKSalary" style=""></td>
+                <td id="tdKPosition" style=""></td>
+                <td id="tdKPoints" style=""></td>
+            </tr>
+        </table>
+    </td>
+</tr>
+</table>
+
+
+<script>
+
+    /*
+        Global Variables
+     */
+    var lstDkSalaries = null;
+    var lstFfaRankings = null;
+    var lstQb = null;
+    var lstRb = null;
+    var lstWr = null;
+    var lstTe = null;
+    var lstFlex = null;
+    var lstDst = null;
+    var salaryCap = 50000;
+    var spentSalary = 0;
+    var remainingSalary = 50000;
+
+    /*
+        Get JSON Lists
+     */
+    (function() {
+        //alert('Draft Kings Projections');
+        var dkSalaries = 'data/dkSalaries.json';
+        var ffaRankings = "data/ffaRankings.json"
+        //var xhr = createCORSRequest('GET', url);
+        //xhr.send();
+        //var players = "http://api.fantasyomatic.com/v0/players/";
+        //var players  = "http://api.fantasy.nfl.com/v1/players/advanced?season=2016";
+        $.getJSON( dkSalaries, {
+            tags: "name",
+            tagmode: "any",
+            format: "json"
+        })
+            .done(function( data ) {
+                lstDkSalaries = data;
+//                $.each( data, function( index, player ) {
+//                    $("<div>" + player.Name + "</div>").appendTo("#divDk");
+//                });
+            });
+        $.getJSON( ffaRankings, {
+            tags: "name",
+            tagmode: "any",
+            format: "json"
+        })
+                .done(function( data ) {
+                    lstFfaRankings = data;
+                    removeDups(lstFfaRankings);
+//                    $.each( data, function( index, player ) {
+//                        $("<div>" + player.playerteam + "</div>").appendTo("#divFfa");
+//                    });
+                });
+        ///////////////////////////////////////////////////////////
+        // Create the XHR object.
+//    function createCORSRequest(method, url) {
+//        var xhr = new XMLHttpRequest();
+//        if ("withCredentials" in xhr) {
+//            // XHR for Chrome/Firefox/Opera/Safari.
+//            xhr.open(method, url, true);
+//        } else if (typeof XDomainRequest != "undefined") {
+//            // XDomainRequest for IE.
+//            xhr = new XDomainRequest();
+//            xhr.open(method, url);
+//        } else {
+//            // CORS not supported.
+//            xhr = null;
+//        }
+//        return xhr;
+//    }
+////////////////////////////////
+//
+//        $.ajax({
+//            type: 'GET',
+//            url:'http://api.fantasyomatic.com/v0/players/',
+//            dataType: "jsonp",
+//            success: function(arr){
+//                var out = "";
+//                for(i = 0; i<arr.length; i++) {
+//                    mp[arr[i].key] = arr[i].value;
+//                }
+//            }
+//        });
+        ///////////////////////////////////////////////////////
+        //
+
+    })();
+
+    /*
+        Get Draft Kings Salaries
+     */
+    function getDkSalaries() {
+        if(lstDkSalaries != null) {
+            $.each( lstDkSalaries, function( index, player ) {
+                //$("<div>" + player.Name + "</div>").appendTo("#tdName");
+            });
+        }
+    }
+
+    /*
+        Filter and Display Fantasy Football Analytics Projections with Draft Kings salaries
+     */
+    function getFfaRankings() {
+        if(lstFfaRankings != null) {
+            $.each( lstFfaRankings, function( index, player ) {
+                if(player.salary == null) {
+                    player.salary = 0;
+                }
+                //$("<div><input type='checkbox' id='" + player.playerId + "' value='" + player.playerId + "' />" + player.playerId + "</div>").appendTo("#tdId");
+                $("<div><input type='checkbox' id='" + player.playerId + "' value='" + player.playerId + "' />" + player.playername + "</div>").appendTo("#tdName");
+                $("<div>" + player.salary + "</div>").appendTo("#tdSalary");
+                $("<div>" + player.position + "</div>").appendTo("#tdPosition");
+                $("<div>" + player.points + "</div>").appendTo("#tdPoints");
+                // filter positions
+                if(player.playerposition == "QB") {
+                    $("<div><input type='checkbox' id='" + player.playerId + "' value='" + player.playerId + "' />" + player.playername + "</div>").appendTo("#tdQbName");
+                    $("<div>" + player.salary + "</div>").appendTo("#tdQbSalary");
+                    $("<div>" + player.position + "</div>").appendTo("#tdQbPosition");
+                    $("<div>" + player.points + "</div>").appendTo("#tdQbPoints");
+                }
+                if(player.playerposition == "RB") {
+                    $("<div><input type='checkbox' id='" + player.playerId + "' value='" + player.playerId + "' />" + player.playername + "</div>").appendTo("#tdRbName");
+                    $("<div>" + player.salary + "</div>").appendTo("#tdRbSalary");
+                    $("<div>" + player.position + "</div>").appendTo("#tdRbPosition");
+                    $("<div>" + player.points + "</div>").appendTo("#tdRbPoints");
+                }
+                if(player.playerposition == "WR") {
+                    $("<div><input type='checkbox' id='" + player.playerId + "' value='" + player.playerId + "' />" + player.playername + "</div>").appendTo("#tdWrName");
+                    $("<div>" + player.salary + "</div>").appendTo("#tdWrSalary");
+                    $("<div>" + player.position + "</div>").appendTo("#tdWrPosition");
+                    $("<div>" + player.points + "</div>").appendTo("#tdWrPoints");
+                }
+                if(player.playerposition == "TE") {
+                    $("<div><input type='checkbox' id='" + player.playerId + "' value='" + player.playerId + "' />" + player.playername + "</div>").appendTo("#tdTeName");
+                    $("<div>" + player.salary + "</div>").appendTo("#tdTeSalary");
+                    $("<div>" + player.position + "</div>").appendTo("#tdTePosition");
+                    $("<div>" + player.points + "</div>").appendTo("#tdTePoints");
+                }
+                if(player.playerposition == "DST") {
+                    $("<div><input type='checkbox' id='" + player.playerId + "' value='" + player.playerId + "' />" + player.playername + "</div>").appendTo("#tdDstName");
+                    $("<div>" + player.salary + "</div>").appendTo("#tdDstSalary");
+                    $("<div>" + player.position + "</div>").appendTo("#tdDstPosition");
+                    $("<div>" + player.points + "</div>").appendTo("#tdDstPoints");
+                }
+                if(player.playerposition == "K") {
+                    $("<div><input type='checkbox' id='" + player.playername + "' value='" + player.playername + "' />" + player.playername + "</div>").appendTo("#tdKName");
+                    $("<div>" + player.salary + "</div>").appendTo("#tdKSalary");
+                    $("<div>" + player.position + "</div>").appendTo("#tdKPosition");
+                    $("<div>" + player.points + "</div>").appendTo("#tdKPoints");
+                }
+            });
+        }
+    }
+
+    /*
+        Import DK Salaries into  FFA Projection JSON List
+     */
+    function mergeData() {
+        if(lstDkSalaries != null) {
+            $.each( lstDkSalaries, function( index, dkPlayer ) {
+                if(lstFfaRankings != null) {
+                    $.each( lstFfaRankings, function( index, ffaPlayer ) {
+                        if(ffaPlayer.playername.trim() == dkPlayer.Name.trim() &&
+                            ffaPlayer.position == dkPlayer.Position) {
+                            ffaPlayer.salary = dkPlayer.Salary;
+                        }
+                        if (ffaPlayer.playername.toLowerCase().indexOf("terrelle") >= 0 &&
+                                dkPlayer.Name.toLowerCase().indexOf("terrelle") >= 0) {
+                            ffaPlayer.salary = dkPlayer.Salary;
+                        }
+                        if (ffaPlayer.playername.indexOf("Odell") >= 0 &&
+                                dkPlayer.Name.indexOf("Odell") >= 0) {
+                            ffaPlayer.salary = dkPlayer.Salary;
+                        }
+                        if (ffaPlayer.playername.toLowerCase().indexOf("marvin jones") >= 0 &&
+                                dkPlayer.Name.toLowerCase().indexOf("marvin jones") >= 0) {
+                            ffaPlayer.salary = dkPlayer.Salary;
+                        }
+                        if (ffaPlayer.playername.toLowerCase().indexOf("steve smith") >= 0 &&
+                                dkPlayer.Name.toLowerCase().indexOf("steve smith") >= 0) {
+                            ffaPlayer.salary = dkPlayer.Salary;
+                        }
+                        if (ffaPlayer.playername.toLowerCase().indexOf("ted ginn") >= 0 &&
+                                dkPlayer.Name.toLowerCase().indexOf("ted ginn") >= 0) {
+                            ffaPlayer.salary = dkPlayer.Salary;
+                        }
+                        if (ffaPlayer.playername.indexOf("LeVeon Bell") >= 0 &&
+                                dkPlayer.Name.indexOf("Le'Veon Bell") >= 0) {
+                            ffaPlayer.salary = dkPlayer.Salary;
+                        }
+                    });
+                }
+            });
+        }
+        getFfaRankings();
+        cbStatus();
+    }
+
+    /*
+        Event for Checkbox click
+     */
+    function cbStatus() {
+        $(":checkbox").change(function() {
+            if(this.checked) {
+                getRemainingSalary(this.valueOf().id, "add");
+                //alert(this.valueOf().id);
+            }else if(!this.checked){
+                getRemainingSalary(this.valueOf().id, "minus");
+            }
+        });
+    }
+    
+    /*
+        Calculate running total salary
+     */
+    function getRemainingSalary(id, operator) {
+        if(lstFfaRankings != null) {
+            $.each( lstFfaRankings, function( index, ffaPlayer ) {
+                if(operator == "add") {
+                    if(id == ffaPlayer.playerId) {
+                        spentSalary = spentSalary + ffaPlayer.salary;
+                        remainingSalary = salaryCap - spentSalary;
+                        //alert("Spent Salary:  " + spentSalary + ", Remaining: " + remainingSalary);
+                        $("#spnRemainingSalary").html('').append(remainingSalary);
+                        // TODO: Add name from array
+                        //$("#spnPlayers").append(ffaPlayer.playername + ", " );
+                    }
+                } else if(operator == "minus") {
+                    if(id == ffaPlayer.playerId) {
+                        spentSalary = spentSalary - ffaPlayer.salary;
+                        remainingSalary = salaryCap + spentSalary;
+                        //alert("TotalSalary: " + spentSalary + ", " + "Remaining: " + remainingSalary);
+                        $("#spnRemainingSalary").html('').append(remainingSalary);
+                        // TODO: Remove name from array
+                    }
+                }
+            });
+        }
+    }
+
+    /*
+        Remove duplicate json objects
+     */
+    function removeDups(data) {
+        var temp = {};
+        for(var i = 0; i < data.length ; i++ ){
+            var obj = data[i];
+            if(temp[obj.playerId] >= 0){
+                data.splice(i, 1);
+                i--;
+            }
+            temp[obj.playerId] = i;
+        }
+    }
+</script>
+</body>
+</html>
