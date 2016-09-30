@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Players</title>
+    <style>
+        img {
+            height: 100px;
+            float: left;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+
+<div id="qb"></div>
+<div>
+    <a href="draftkings.html">Draft Kings Projections</a>
+</div>
+<script>
+    (function() {
+//        var url = 'http://api.fantasyomatic.com/v0/players/';
+//        var xhr = createCORSRequest('GET', url);
+//        xhr.send();
+//        var players = "http://api.fantasyomatic.com/v0/players/";
+//        //var players  = "http://api.fantasy.nfl.com/v1/players/advanced?season=2016";
+//        $.getJSON( players, {
+//            tags: "mount rainier",
+//            tagmode: "any",
+//            format: "json"
+//        })
+//            .done(function( data ) {
+//                $.each( data, function( position, players ) {
+//                    //$( "<img>" ).attr( "src", item.media.m ).appendTo( "#images" );
+//                    if(position == "QB"){
+//                        $.each( players, function( index, player ) {
+//                            $("<div>" + player.firstName + "&nbsp;" + player.lastName +  "</div>").appendTo("#qb");
+//                        });
+//                    }
+//                });
+//            });
+////////////////////////////////
+//
+//        $.ajax({
+//            type: 'GET',
+//            url:'http://api.fantasyomatic.com/v0/players/',
+//            dataType: "jsonp",
+//            success: function(arr){
+//                var out = "";
+//                for(i = 0; i<arr.length; i++) {
+//                    mp[arr[i].key] = arr[i].value;
+//                }
+//            }
+//        });
+        ///////////////////////////////////////////////////////
+        //
+        var myParam = "";
+        $.ajax({
+            url: "http://api.fantasyomatic.com/v0/players/14252",
+            //url:  'https://api.bitbucket.org/1.0/repositories/retroviz/webformsthemeswitcher/src/tip/.hgignore',
+            // The name of the callback parameter, as specified by the YQL service
+            //jsonp: 'jsonpCallback',
+            json: false,
+            // Tell jQuery we're expecting JSONP
+            dataType: "jsonp",
+            // Tell YQL what we want and that we want JSON
+            /*data: {
+                q: "select title,abstract,url from search.news where query=\"cat\"",
+                format: "json"
+            },*/
+
+            // Work with the response
+//            success: function( response, textStatus ) {
+//                alert('from success call');
+//                console.log( textStatus ); // server response
+//            },
+            error: function(xhr, status, error) {
+                //alert(error);
+            },
+            success: jsonpCallback,
+//            jsonpCallback: function( response ) {
+//                alert('success');
+//                console.log( response ); // server response
+//            }
+            callback: function( response ) {
+                //alert('success from callback');
+                console.log( response ); // server response
+            }
+        });
+
+    })();
+    ////////////////////////////////////////////////////////////\
+    //
+    function jsonpCallback(response, textStatus){
+        //alert('from jsonpCallback function');
+        //$('#qb').text(response.data);
+    }
+
+    ///////////////////////////////////////////////////////////
+    // Create the XHR object.
+//    function createCORSRequest(method, url) {
+//        var xhr = new XMLHttpRequest();
+//        if ("withCredentials" in xhr) {
+//            // XHR for Chrome/Firefox/Opera/Safari.
+//            xhr.open(method, url, true);
+//        } else if (typeof XDomainRequest != "undefined") {
+//            // XDomainRequest for IE.
+//            xhr = new XDomainRequest();
+//            xhr.open(method, url);
+//        } else {
+//            // CORS not supported.
+//            xhr = null;
+//        }
+//        return xhr;
+//    }
+    function test() {
+        alert('success');
+    }
+</script>
+<body>
+
+</body>
+</html>
