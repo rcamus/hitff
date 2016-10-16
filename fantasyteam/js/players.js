@@ -33,9 +33,6 @@ var lineup = [];
     })
         .done(function( data ) {
             lstDkSalaries = data;
-//                $.each( data, function( index, player ) {
-//                    $("<div>" + player.Name + "</div>").appendTo("#divDk");
-//                });
         });
     $.getJSON( ffaRankings, {
         tags: "name",
@@ -45,9 +42,6 @@ var lineup = [];
         .done(function( data ) {
             lstFfaRankings = data;
             removeDups(lstFfaRankings);
-//                    $.each( data, function( index, player ) {
-//                        $("<div>" + player.playerteam + "</div>").appendTo("#divFfa");
-//                    });
         });
     ///////////////////////////////////////////////////////////
     // Create the XHR object.
@@ -138,6 +132,7 @@ function displayFfaRankings() {
             if(player.playerposition == "TE") {
                 $("<div title='" + player.gameinfo + "' class='divName'><input type='checkbox' id='" + player.playerId + "' value='" + player.playerId + "' />" + player.playername + "(" + player.team + ")" + "</div>").appendTo("#tdTeName");
                 $("<div>" + player.salary + "</div>").appendTo("#tdTeSalary");
+                $("<div>" + player.playervalue + "</div>").appendTo("#tdTeValue");
                 $("<div>" + player.position + "</div>").appendTo("#tdTePosition");
                 $("<div>" + player.points + "</div>").appendTo("#tdTePoints");
             }
